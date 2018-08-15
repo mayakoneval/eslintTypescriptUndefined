@@ -1,0 +1,6 @@
+checklist:
+- remove eslint typescript parser
+- install typescript as a dev dependency (same version as engine frontend)
+- install dev dependency of parser
+- add peer dependencies
+
