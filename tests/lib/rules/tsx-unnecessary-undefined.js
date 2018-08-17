@@ -45,6 +45,10 @@ ruleTester.run("tsx-unnecessary-undefined", rule, {
     {
       parser: "typescript-eslint-parser",
       code: "type Star = { Moon: string; Sun: Moon | undefined; }"
+    },
+    {
+      parser: "typescript-eslint-parser",
+      code: "type Star = { Moon: undefined | string; Sun: Moon | undefined; }"
     }
   ],
 
@@ -92,6 +96,43 @@ ruleTester.run("tsx-unnecessary-undefined", rule, {
         }
       ],
       output: "type Star = { Moon?: string; Sun?: string; };"
+    },
+    {
+      parser: "typescript-eslint-parser",
+      code: "type Star = { Moon?: undefined | string; };",
+      errors: [
+        {
+          message: "Optional types already are optionally undefined"
+        }
+      ],
+      output: "type Star = { Moon?: string; };"
+    },
+    {
+      parser: "typescript-eslint-parser",
+      code: "type Star = { Moon?: undefined                    | string; };",
+      errors: [
+        {
+          message: "Optional types already are optionally undefined"
+        }
+      ],
+      output: "type Star = { Moon?: string; };"
+    },
+    {
+      parser: "typescript-eslint-parser",
+      code: `
+            type Star = { Moon?:
+                | undefined
+                | string
+            };`,
+      errors: [
+        {
+          message: "Optional types already are optionally undefined"
+        }
+      ],
+      output: `
+            type Star = { Moon?:
+                | string
+            };`
     }
   ]
 });
